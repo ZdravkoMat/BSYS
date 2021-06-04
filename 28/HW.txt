@@ -1,0 +1,39 @@
+2)
+python3 x86.py -p flag.s -M flag,count -R ax,bx -c
+flag = 0
+
+3)
+python3 x86.py -p flag.s -M flag,count -R ax,bx -c -a bx=2,bx=2
+flag still 0
+
+4)
+bx=10 good (11,15)
+bx=10 bad (1,2,3)
+
+5)
+
+
+6)
+python3 x86.py -p test-and-set.s -M mutex,count -R ax,bx -c -a bx=2,bx=2
+seems to be working mutex is 0 at end
+
+7)
+Fairness and Performance
+
+9)
+python3 x86.py -p peterson.s -M count,flag,turn -R ax,cx -a bx=0,bx=1 -c -i 2
+
+10)
+
+
+11)
+python3 x86.py -p ticket.s -M count,ticket,turn -R ax,bx,cx -a bx=1000,bx=1000 -c
+threads spent alot of time spin-waiting
+
+12)
+they still spin-wait
+
+13)
+it saves one instruction per cycle but only if the thread doesnt hold the mutex
+
+14)

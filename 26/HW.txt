@@ -1,0 +1,38 @@
+1)
+dx should be -1
+
+2)
+T1 dx should start by 3 and end at -1
+T2 dx should start by 3 and end at -1
+
+2 threads have no effect on result
+no race
+
+3)
+more interupts (obv)
+takes longer to reach -1
+
+4)
+1 ?
+
+5)
+because of "bx=3" 
+final value: 6
+
+6)
+value is either 1 or 2
+yes because it decides if the number will end 1 or 2
+
+7)
+if i is set to 3 or higher the result is correct
+
+8)
+i needs to be high at least 300
+dont know
+
+9)
+
+
+10)
+
+Not using CPU efficiently

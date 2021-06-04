@@ -1,0 +1,29 @@
+1)
+Conflict with Adress
+
+2)
+Lock around worker (balance++) possible data race
+Lock around both no errors
+
+3)
+Threads lock each other
+
+4)
+Thread #3: lock order "0x10C040 before 0x10C080" violated
+
+5)
+Same Error
+Yes
+
+6)
+Parent loops and does nothing
+
+7)
+Possible data race during read of size 4 at 0x10C014 by thread #1
+Possible data race during write of size 1 at 0x52801A5 by thread #1
+
+8)
+both
+
+9)
+No errors shown
