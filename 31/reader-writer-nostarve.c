@@ -71,6 +71,10 @@ void *writer() {
 }
 
 int main(int argc, char *argv[]) {
+    if (argc != 4) {
+        fprintf(stderr, "usage: ./reader-writer-nostarve reader writer loops \n");
+        exit(EXIT_FAILURE);
+    }
     assert(argc == 4);
     int num_readers = atoi(argv[1]);
     int num_writers = atoi(argv[2]);
