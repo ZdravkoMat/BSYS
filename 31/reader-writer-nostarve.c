@@ -10,7 +10,6 @@
 typedef struct __rwlock_t {
     sem_t mutex;
     sem_t writelock;
-    sem_t turnstile;
     int readers;
 } rwlock_t;
 
