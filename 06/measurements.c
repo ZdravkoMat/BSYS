@@ -11,7 +11,7 @@
 
 long int cost(unsigned int nbytes) {
     char buf[1];
-    // defined in /usr/include/bits/types/struct_timespec.h
+    //defined in /usr/include/bits/types/struct_timespec.h
     struct timespec start, end;
     if (clock_gettime(CLOCK_REALTIME, &start) == -1) {
         fprintf(stderr, "error in clock_getres\n");
@@ -24,7 +24,7 @@ long int cost(unsigned int nbytes) {
         fprintf(stderr, "error in clock_getres\n");
         exit(1);
     }
-    // convert seconds to nanoseconds and add to nanoseconds
+    //convert seconds to nanoseconds and add to nanoseconds
     long int res = (BILLION * (end.tv_sec - start.tv_sec) +
                     (end.tv_nsec - start.tv_nsec)) /
                    nbytes;

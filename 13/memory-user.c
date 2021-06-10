@@ -2,19 +2,27 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main(int argc, char **argv) {
-    int mem;
-    char *array;
-    if (argc != 2) {
-        fprintf(stderr, "use: ./memory-user membytes\n");
+int main(int argc, char **argv)
+{
+    printf("pid: %d\n", getpid());
+
+    int memory;
+    int *array;
+
+    if (argc != 2)
+    {
+        fprintf(stderr, "use: ./memory-user MB\n");
         exit(1);
     }
-    printf("pid: %u\n", (int)getpid());
-    mem = atoi(argv[1]);
-    array = malloc(mem);
-    while (1) {
-        for (int i = 0; i < mem; i++) {
-            array[i] = ' ';
+
+    memory = atoi(argv[1]);
+    array = malloc(memory);
+
+    while (1)
+    {
+        for (int i = 0; i < memory; i++)
+        {
+            array[i] += 1;
         }
     }
     free(array);
