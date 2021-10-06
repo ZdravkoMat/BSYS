@@ -1,7 +1,7 @@
 CC := clang
 CFLAGS := -Wall
 
-all: measurements.out
+all: 6.out measure.out
 
 %.out: %.c
 	$(CC) -o $@ $< $(CFLAGS)
