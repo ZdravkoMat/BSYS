@@ -1,57 +1,57 @@
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/time.h>
 
-#define STATS 200
-#define BILLION 1000000000L
-
-long int cost(unsigned int nbytes) {
-    char buf[1];
-    //defined in /usr/include/bits/types/struct_timespec.h
-    struct timespec start, end;
-    if (clock_gettime(CLOCK_REALTIME, &start) == -1) {
-        fprintf(stderr, "error in clock_getres\n");
+int main()
+{
+    printf("hello world (pid:%d)\n", (int) getpid());
+    int fd[2];
+    
+    if(pipe(fd) == -1)
+    {
         exit(1);
     }
-    for (int i = 0; i < nbytes; i++) {
-        read(STDIN_FILENO, buf, 0);
-    }
-    if (clock_gettime(CLOCK_REALTIME, &end) == -1) {
-        fprintf(stderr, "error in clock_getres\n");
+    
+    int rc = fork();
+    if(rc < 0)
+    {
+        fprintf(stderr, "fork failed\n");
         exit(1);
     }
-    //convert seconds to nanoseconds and add to nanoseconds
-    long int res = (BILLION * (end.tv_sec - start.tv_sec) +
-                    (end.tv_nsec - start.tv_nsec)) /
-                   nbytes;
-    return res;
-}
-
-void statistics() {
-    int nbytes[] = {100, 1000, 10000, 100000};
-    long int average_nsec[sizeof(nbytes) / sizeof(int)] = {0};
-    int length = sizeof(nbytes) / sizeof(int);
-    long int average = 0;
-
-    for (int i = 0; i < length; i++) {
-        for (int j = 0; j < STATS; j++) {
-            average_nsec[i] += cost(nbytes[i]);
+    else if (rc == 0)
+    {
+        close(fd[0]);
+        //printf("hello, i am child (pid:%d)\n", (int) getpid());
+        struct timeval t;
+        gettimeofday(&t, NULL);
+        write(fd[1], &t, sizeof(struct timeval));
+        exit(0);
+    }
+    else
+    {
+        close(fd[1]);
+        //printf("hello, i am parent of %d (pid:%d)\n", rc, (int) getpid());
+        struct timeval t1;
+        read(fd[0], &t1, sizeof(struct timeval));
+        printf("t1.tv_sec = %ld, t1.tv_usec = %ld\n", t1.tv_sec, t1.tv_usec);
+        
+        struct timeval t2;
+        gettimeofday(&t2, NULL);
+        printf("t2.tv_sec = %ld, t2.tv_usec = %ld\n", t2.tv_sec, t2.tv_usec);
+        
+        long int sec_diff = t2.tv_sec - t1.tv_sec;
+        long int usec_diff = t2.tv_usec - t1.tv_usec;
+        
+        if(usec_diff < 0)
+        {
+            sec_diff -= 1;
+            usec_diff = 1000000 + sec_diff;
         }
-        average_nsec[i] /= STATS;
-        printf("average for read %d times : %ld ns\n", nbytes[i],
-               (average_nsec[i]));
+        
+        printf("sec_diff = %ld, usec_diff = %ld\n", sec_diff, usec_diff);
     }
-    for (int i = 0; i < length; i++) {
-        average += average_nsec[i];
-    }
-    printf("average total : %ld ns\n", average / length);
-    return;
-}
-
-int main(int argc, char **argv) {
-    statistics();
     return 0;
 }
