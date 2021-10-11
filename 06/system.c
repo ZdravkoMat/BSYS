@@ -6,12 +6,12 @@
 
 int main()
 {
-    int file = open("./file.txt", O_WRONLY);
+    int file = open("./file.txt", O_WRONLY | O_CREAT);
     int loops = 1000000;
 
     struct timeval start, end;
     gettimeofday(&start, NULL);
-    for (size_t i = 0; i < loops; i++)
+    for (int i = 0; i < loops; i++)
     {
         read(file, NULL, 0);
     }

@@ -9,12 +9,9 @@
 
 int main()
 {
-    const int core_id = 0;
-    //const pid_t pid = getpid();
-    cpu_set_t cpuset;
-    CPU_ZERO(&cpuset);
-    CPU_SET(core_id, &cpuset);
-    printf("hello world (pid:%d)\n", (int)getpid());
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask);
     int fd[2];
 
     if (pipe(fd) == -1)
@@ -30,8 +27,11 @@ int main()
     }
     else if (rc == 0)
     {
+        if (sched_setaffinity(getpid(), sizeof(cpu_set_t), &mask) == -1)
+        {
+            exit(EXIT_FAILURE);
+        }
         close(fd[0]);
-        //printf("hello, i am child (pid:%d)\n", (int) getpid());
         struct timeval t;
         gettimeofday(&t, NULL);
         write(fd[1], &t, sizeof(struct timeval));
@@ -39,8 +39,11 @@ int main()
     }
     else
     {
+        if (sched_setaffinity(getpid(), sizeof(cpu_set_t), &mask) == -1)
+        {
+            exit(EXIT_FAILURE);
+        }
         close(fd[1]);
-        //printf("hello, i am parent of %d (pid:%d)\n", rc, (int) getpid());
         struct timeval t1;
         read(fd[0], &t1, sizeof(struct timeval));
         printf("t1.tv_sec = %ld, t1.tv_usec = %ld\n", t1.tv_sec, t1.tv_usec);

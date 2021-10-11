@@ -1,7 +1,7 @@
 CC := clang
 CFLAGS := -Wall -Wextra -Wpedantic
 
-all: 6.out measure.out
+all: context.out system.out
 
 %.out: %.c
 	$(CC) -o $@ $< $(CFLAGS)
