@@ -1,5 +1,5 @@
 CC := clang
-CFLAGS := -Wall
+CFLAGS := -Wall -Wextra -Wpedantic
 
 all: 6.out measure.out
 

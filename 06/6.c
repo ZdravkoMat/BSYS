@@ -1,12 +1,19 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#include <sched.h>
 
 int main()
 {
+    const int core_id = 0;
+    //const pid_t pid = getpid();
+    cpu_set_t cpuset;
+    CPU_ZERO(&cpuset);
+    CPU_SET(core_id, &cpuset);
     printf("hello world (pid:%d)\n", (int)getpid());
     int fd[2];
 

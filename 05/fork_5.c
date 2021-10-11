@@ -4,15 +4,15 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main(int argc, char **argv)
+int main()
 {
-    int fork_rc = fork();
-    if (fork_rc < 0)
+    int rc = fork();
+    if (rc < 0)
     {
         fprintf(stderr, "fork failed\n");
         exit(1);
     }
-    else if (fork_rc == 0)
+    else if (rc == 0)
     {
         printf("Childprocess: %d\n", (int)getpid());
         int wait_rc = wait(NULL);

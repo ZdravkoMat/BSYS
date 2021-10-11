@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <string.h> //strcpy
 
-int main(int argc, char **argv)
+int main()
 {
-    char buf[14];
-    int fd = open("./file.txt", O_WRONLY); //open for write only
+    FILE *fp;
+    fp = fopen("./file.txt", "w");
     int rc = fork();
     if (rc < 0)
     {
@@ -17,16 +15,14 @@ int main(int argc, char **argv)
     else if (rc == 0)
     {
         printf("Childprocess: %d\n", (int)getpid());
-        strcpy(buf, "Child writes\n");
-        write(fd, buf, 13);
-        close(fd);
+        fprintf(fp, "%s", "Child writes\n");
+        fclose(fp);
     }
     else
     {
         printf("Parentprocess: %d\n", (int)getpid());
-        strcpy(buf, "Parent writes\n");
-        write(fd, buf, 14);
-        close(fd);
+        fprintf(fp, "%s", "Parent writes\n");
+        fclose(fp);
     }
     return 0;
 }

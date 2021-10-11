@@ -1,0 +1,27 @@
+5.1:
+    Welchen Wert hat die Variable x des Child-Prozesses?
+        - x = 100
+    Was passiert, wenn sowohl Child als auch Parent den Wert von x ändern?
+        - Da die x Werte im Child und im Parentprozess unabhängig voneinander sind, ändert er sich bei beiden z.b um einen gegeben Wert.
+
+5.2:
+    Können sowohl Child als auch Parent auf den, von open() zurückgelieferten, Filedeskriptor zugreifen?
+        - Ja
+    Was passiert wenn beide gleichzeitig in die Datei schreiben?
+        - Je nachdem welcher Prozess als erstes aufgerufen wird, dessen Text wird als erstes in die Datei geschrieben
+
+5.4:
+    Warum glauben Sie gibt es so viele Varianten des selben Basis-Calls: exec()? (execlp(), execv(), ...)
+        - 
+
+5.5:
+    Was passiert, wenn Sie die Funktion wait() im Child aufrufen?
+        - Es kommt ein returnvalue von -1, was bedeutet es wird auf ein beliebigen Childprozess gewartet
+
+5.6:
+    Wann wäre der Aufruf von waitpid() sinnvoll?
+        - Wenn man auf einen bestimmten Childprozess warten möchte
+
+5.7:
+    Was passiert, wenn der Child printf() aufruft, um irgendeinen Output auszugeben, nachdem der Deskriptor geschlossen wurde?
+        - Es kommt keine Ausgabe, da der Deskriptor geschlossen worden ist

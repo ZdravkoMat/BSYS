@@ -4,8 +4,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main(int argc, char **argv)
+int main()
 {
+    char *const parm[] = {"/bin/ls", "-l", "/home/zdravko/Desktop/BSYS/05", NULL};
     int rc = fork();
     if (rc < 0)
     {
@@ -14,18 +15,18 @@ int main(int argc, char **argv)
     }
     else if (rc == 0)
     {
-        printf("Childprocess");
-        //execl("/bin/ls", "ls");
-        //execle("/bin/ls", "ls");
+        printf("Childprocess\n");
+        //execl("/bin/ls", "ls -l");
+        //execle("/bin/ls", "ls -a");
         //execlp("/bin/ls", "ls");
-        //execv("/bin/ls", "ls"); //help
-        //execvp("/bin/ls", "ls"); //help
-        //execvpe("/bin/ls", "ls"); //help
+        //execv("/bin/ls", parm);
+        execvp("/bin/ls", parm);
+        //execvpe("/bin/ls", parm); //help
     }
     else
     {
         wait(NULL);
-        printf("Parentprocess");
+        printf("Parentprocess\n");
     }
     return 0;
 }
