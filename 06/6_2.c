@@ -2,14 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
 #include <sys/time.h>
 #include <sched.h>
 
 int main()
 {
+    printf("hello world (pid:%d)\n", (int)getpid());
     cpu_set_t mask;
     CPU_ZERO(&mask);
-    CPU_SET(0, &mask);
     int fd[2];
 
     if (pipe(fd) == -1)
@@ -25,10 +27,8 @@ int main()
     }
     else if (rc == 0)
     {
-        if (sched_setaffinity(getpid(), sizeof(cpu_set_t), &mask) == -1)
-        {
-            exit(EXIT_FAILURE);
-        }
+	CPU_SET(1, &mask);
+        sched_setaffinity(0, sizeof(cpu_set_t), &mask);
         close(fd[0]);
         struct timeval t;
         gettimeofday(&t, NULL);
@@ -37,10 +37,8 @@ int main()
     }
     else
     {
-        if (sched_setaffinity(getpid(), sizeof(cpu_set_t), &mask) == -1)
-        {
-            exit(EXIT_FAILURE);
-        }
+	CPU_SET(1, &mask);
+        sched_setaffinity(0, sizeof(cpu_set_t), &mask);
         close(fd[1]);
         struct timeval t1;
         read(fd[0], &t1, sizeof(struct timeval));

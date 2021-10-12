@@ -9,9 +9,8 @@ int main()
 {
     cpu_set_t mask;
     CPU_ZERO(&mask);
-    CPU_SET(0, &mask);
     int fd[2], fd2[2];
-    size_t loops = 1000000;
+    int loops = 1000000;
     struct timeval start, end;
 
     if (pipe(fd) == -1)
@@ -27,23 +26,25 @@ int main()
     }
     else if (rc == 0)
     {
+	CPU_SET(0, &mask);
         if (sched_setaffinity(getpid(), sizeof(cpu_set_t), &mask) == -1)
         {
-            exit(EXIT_FAILURE);
+
         }
-        for(size_t i = 0; i < loops; i++){
+        for(int i = 0; i < loops; i++){
             read(fd[0], NULL, 0);
             write(fd2[1], NULL, 0);
         }
     }
     else
     {
+	CPU_SET(0, &mask);
         if (sched_setaffinity(getpid(), sizeof(cpu_set_t), &mask) == -1)
         {
-            exit(EXIT_FAILURE);
+
         }
         gettimeofday(&start, NULL);
-        for(size_t i = 0; i < loops; i++){
+        for(int i = 0; i < loops; i++){
             write(fd2[1], NULL, 0);
             read(fd[0], NULL, 0);
         }
