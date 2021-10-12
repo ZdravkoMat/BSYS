@@ -27,7 +27,7 @@ int main()
     }
     else if (rc == 0)
     {
-	CPU_SET(1, &mask);
+	    CPU_SET(1, &mask);
         sched_setaffinity(0, sizeof(cpu_set_t), &mask);
         close(fd[0]);
         struct timeval t;
@@ -37,7 +37,7 @@ int main()
     }
     else
     {
-	CPU_SET(1, &mask);
+	    CPU_SET(1, &mask);
         sched_setaffinity(0, sizeof(cpu_set_t), &mask);
         close(fd[1]);
         struct timeval t1;

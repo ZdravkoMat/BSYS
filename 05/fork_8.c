@@ -19,13 +19,11 @@ int main()
     else if (rc == 0)
     {
         close(fd[0]); // closes up input side
-        printf("test\n");
         close(fd[1]); // closes up output side
     }
     else
     {
         close(fd[0]);
-        printf("test2\n");
         close(fd[1]);
     }
     return 0;
