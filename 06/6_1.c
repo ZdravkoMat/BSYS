@@ -18,4 +18,5 @@ int main()
     gettimeofday(&end, NULL);
     printf("%f ms\n", (float)(end.tv_sec * 1000000 + end.tv_usec - start.tv_sec * 1000000 - start.tv_usec) / loops);
     close(file);
+    return 0;
 }
