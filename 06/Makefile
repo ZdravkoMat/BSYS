@@ -1,10 +1,11 @@
 CC := clang
-CFLAGS := -Wall -Wextra -Wpedantic
+CFLAGS := -std=gnu11 -Wall -Wextra -Wpedantic
 
-all: 6_1.out 6_2.out
+all: 6_1.out 6.out
 
 %.out: %.c
 	$(CC) -o $@ $< $(CFLAGS)
 
 clean:
 	rm -f ./*.out
+	rm -f ./*.txt
