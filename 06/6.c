@@ -80,7 +80,7 @@ int main()
             time -= ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / loops;
             printf("%ld\n", time);
         }
-        printf("%ld\n", time);
+        printf("context switch: %ld ns\n", time);
     }
     return 0;
 }
