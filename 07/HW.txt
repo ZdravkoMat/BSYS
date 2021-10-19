@@ -33,4 +33,4 @@ Can you use the simulator to demonstrate the trend?
 Can you write an equation that gives the worst-case response time, given N jobs?
 
 - Responsetime steigt
-- ???
+- Tresponse = (q * (n-1))/2

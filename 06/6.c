@@ -13,7 +13,7 @@ int main()
     CPU_ZERO(&mask);
     CPU_SET(1, &mask);
     struct timespec start, end;
-    long int ytime, ftime, loops = 1000000;
+    long int time = 0, loops = 1000000;
     int fd1[2], fd2[2];
     if (pipe(fd1) == -1 || pipe(fd2) == -1)
     {
@@ -55,14 +55,32 @@ int main()
             read(fd2[0], NULL, 0);
         }
         clock_gettime(CLOCK_MONOTONIC, &end);
-        ytime = ((end.tv_sec + end.tv_nsec) - (start.tv_sec + start.tv_nsec)) / loops;
+        if ((end.tv_nsec - start.tv_nsec) < 0)
+        {
+            time += ((end.tv_sec - start.tv_sec) + (1000000000 + end.tv_nsec - start.tv_nsec)) / loops;
+            printf("%ld\n", time);
+        }
+        else
+        {
+            time += ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / loops;
+            printf("%ld\n", time);
+        }
         clock_gettime(CLOCK_MONOTONIC, &start);
         for (int i = 0; i < loops; i++)
         {
         }
         clock_gettime(CLOCK_MONOTONIC, &end);
-        ftime = ((end.tv_sec + end.tv_nsec) - (start.tv_sec + start.tv_nsec)) / loops;
-        printf("%ld\n", (ytime - ftime));
+        if ((end.tv_nsec - start.tv_nsec) < 0)
+        {
+            time -= ((end.tv_sec - start.tv_sec) + (1000000000 + end.tv_nsec - start.tv_nsec)) / loops;
+            printf("%ld\n", time);
+        }
+        else
+        {
+            time -= ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / loops;
+            printf("%ld\n", time);
+        }
+        printf("%ld\n", time);
     }
     return 0;
 }

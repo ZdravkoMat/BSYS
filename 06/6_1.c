@@ -1,22 +1,44 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/time.h>
+#include <time.h>
 
 int main()
 {
-    int file = open("./file.txt", O_WRONLY | O_CREAT);
-    int loops = 1000000;
+    long int time = 0, loops = 1000000;
 
-    struct timeval start, end;
-    gettimeofday(&start, NULL);
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
     for (int i = 0; i < loops; i++)
     {
-        read(file, NULL, 0);
+        open("./file.txt", O_WRONLY | O_CREAT);
     }
-    gettimeofday(&end, NULL);
-    printf("%f ms\n", (float)(end.tv_sec * 1000000 + end.tv_usec - start.tv_sec * 1000000 - start.tv_usec) / loops);
-    close(file);
+    clock_gettime(CLOCK_MONOTONIC, &end);
+
+    if ((end.tv_nsec-start.tv_nsec)<0)
+    {
+        time += ((end.tv_sec - start.tv_sec) + (1000000000 + end.tv_nsec - start.tv_nsec)) / loops;
+    }
+    else 
+    {
+        time += ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / loops;
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    for (int i = 0; i < loops; i++)
+    {
+    }
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    if ((end.tv_nsec-start.tv_nsec)<0)
+    {
+        time -= ((end.tv_sec - start.tv_sec) + (1000000000 + end.tv_nsec - start.tv_nsec)) / loops;
+    }
+    else 
+    {
+        time -= ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / loops;
+    }
+    printf("%ld\n", time);
     return 0;
 }
