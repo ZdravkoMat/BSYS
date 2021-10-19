@@ -11,7 +11,7 @@ int main()
 {
     cpu_set_t mask;
     CPU_ZERO(&mask);
-    CPU_SET(1, &mask);
+    CPU_SET(9, &mask);
     struct timespec start, end;
     long int time = 0, loops = 1000000;
     int fd1[2], fd2[2];
