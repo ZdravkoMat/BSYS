@@ -58,12 +58,10 @@ int main()
         if ((end.tv_nsec - start.tv_nsec) < 0)
         {
             time += ((end.tv_sec - start.tv_sec) + (1000000000 + end.tv_nsec - start.tv_nsec)) / loops;
-            printf("%ld\n", time);
         }
         else
         {
             time += ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / loops;
-            printf("%ld\n", time);
         }
         clock_gettime(CLOCK_MONOTONIC, &start);
         for (int i = 0; i < loops; i++)
@@ -73,12 +71,10 @@ int main()
         if ((end.tv_nsec - start.tv_nsec) < 0)
         {
             time -= ((end.tv_sec - start.tv_sec) + (1000000000 + end.tv_nsec - start.tv_nsec)) / loops;
-            printf("%ld\n", time);
         }
         else
         {
             time -= ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / loops;
-            printf("%ld\n", time);
         }
         printf("context switch: %ld ns\n", time);
     }
