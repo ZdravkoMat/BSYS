@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 import subprocess as sp
-import matplotlib.pyplot as pl
+import matplotlib.pyplot as plt
 import numpy as np
 
 URL = "python3 /home/zdravko/Desktop/BSYS/09/lottery.py"
@@ -36,7 +36,7 @@ a = np.zeros(MAX_NUMBER_OF_TIME_UNITS)
 for i in range(0,MAX_NUMBER_OF_TIME_UNITS):
     a[i] = get_fairness(i)
 
-pl.plot(range(MAX_NUMBER_OF_TIME_UNITS), a)
-pl.semilogx(10)
-pl.ylim(0,1)
-pl.show()
+plt.plot(range(MAX_NUMBER_OF_TIME_UNITS), a)
+plt.semilogx(10)
+plt.ylim(0,1)
+plt.show()
