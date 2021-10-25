@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main(){
+int main()
+{
     int *x;
     x = NULL;
     printf("x: %d", *x);

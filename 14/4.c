@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main() {
+int main()
+{
     int *x;
-    x = malloc(sizeof(int));
+    x = (int *)malloc(sizeof(int));
     return 0;
 }
