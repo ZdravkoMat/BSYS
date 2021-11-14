@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     cpu_set_t mask;
     CPU_ZERO(&mask);
-    CPU_SET(0, &mask);
+    CPU_SET(9, &mask);
 
     if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1)
     {
@@ -29,11 +29,11 @@ int main(int argc, char *argv[])
     int pages = atoi(argv[1]);
     int trials = atoi(argv[2]);
     int jump = PAGESIZE / sizeof(int);
-    int *a = (int *) malloc(pages);
+    int *a = (int *)malloc((size_t)pages * (size_t)PAGESIZE);;
     struct timespec start, end;
-    long int time = 0;
+    //long int time = 0;
 
-    clock_gettime(CLOCK_MONOTONIC, &start);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     for (int t = 0; t < trials; t++)
     {
         for (int i = 0; i < pages * jump; i += jump)
@@ -41,14 +41,7 @@ int main(int argc, char *argv[])
             a[i] += 1;
         }
     }
-    clock_gettime(CLOCK_MONOTONIC, &end);
-    if ((end.tv_nsec - start.tv_nsec) < 0)
-    {
-        time += ((end.tv_sec - start.tv_sec) + (BILLION + end.tv_nsec - start.tv_nsec)) / trials;
-    }
-    else
-    {
-        time += ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)) / trials;
-    }
-    printf("Time: %ld ns\n", time);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    printf("Time S: %ld ns\n", (end.tv_sec - start.tv_sec) / trials);
+    printf("Time NS: %ld ns\n", (end.tv_nsec - start.tv_nsec) / trials);
 }
