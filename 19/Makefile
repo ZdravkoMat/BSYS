@@ -1,5 +1,5 @@
 CC := clang
-CFLAGS := -std=gnu11 -Wall -Wextra -Wpedantic
+CFLAGS := -std=gnu11 -Wall -Wextra -Wpedantic -pthread
 
 all: tlb.out
 
