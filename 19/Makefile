@@ -1,10 +1,14 @@
-CC := clang
-CFLAGS := -std=gnu11 -Wall -Wextra -Wpedantic -pthread
+CC=clang -g -fno-stack-protector
+CFLAGS = -W -Wall -std=$(STD) -pedantic -pthread
+CPPCHECK = cppcheck --enable=all --std=$(STD)
+STD=c11
 
-all: tlb.out
+.PHONY: all clean cppcheck
 
-%.out: %.c
-	$(CC) -O0 -o $@ $< $(CFLAGS)
+all: $(TARGET)
 
 clean:
-	rm -f ./*.out
+	$(RM) $(TARGET) $(TARGET).o
+
+cppcheck: $(TARGET).c
+	$(CPPCHECK) $<

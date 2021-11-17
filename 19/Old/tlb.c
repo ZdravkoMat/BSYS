@@ -1,10 +1,14 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sched.h>
 #include <time.h>
 #include <pthread.h>
 #include <errno.h>
-#include <sched.h>
+
+#define PAGESIZE 4096
+#define BILLION 1000000000
 #define handle_error_en(en, msg) \
     do                           \
     {                            \
@@ -15,9 +19,9 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc < 3)
+    if (argc != 3)
     {
-        fprintf(stderr, "Aufruf: Seitengröße, Anzahl der Seiten und Versuche");
+        puts("No Inputs! -> ./tlb.out pages trials");
         exit(1);
     }
 
@@ -31,27 +35,25 @@ int main(int argc, char *argv[])
     if (s != 0)
         handle_error_en(s, "pthread_setaffinity_np");
 
-    int PAGESIZE = atoi(argv[1]);
-    int NUMPAGES = atoi(argv[2]);
-    int TRIALS = atoi(argv[3]);
-
-    const int JUMP = PAGESIZE / sizeof(int);
-
+    int NUMPAGES = atoi(argv[1]);
+    int TRIALS = atoi(argv[2]);
+    const int jump = PAGESIZE / sizeof(int);
     int *a = malloc(NUMPAGES * PAGESIZE);
+    struct timespec start, end;
+    long int time = 0;
 
-    struct timespec t1, t2;
-    clock_gettime(CLOCK_MONOTONIC, &t1);
-
-    for (int j = 0; j < TRIALS; j++)
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    for (int t = 0; t < TRIALS; t++)
     {
-        for (int i = 0; i < NUMPAGES * JUMP; i += JUMP)
+        for (int i = 0; i < (NUMPAGES * jump); i += jump)
+        {
             a[i] += 1;
+        }
     }
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    time = (end.tv_sec - start.tv_sec) * BILLION + (end.tv_nsec - start.tv_nsec);
 
-    clock_gettime(CLOCK_MONOTONIC, &t2);
-
-    long int diff = (t2.tv_sec - t1.tv_sec) * 1000000000 + (t2.tv_nsec - t1.tv_nsec);
-    printf("%ld\n", diff);
+    printf("Time: %ld\n", time / NUMPAGES / TRIALS);
     free(a);
     return 0;
 }
