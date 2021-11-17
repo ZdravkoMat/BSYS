@@ -54,4 +54,6 @@ int main(int argc, char *argv[])
     time = (end.tv_sec - start.tv_sec) * BILLION + (end.tv_nsec - start.tv_nsec);
 
     printf("Time: %ld\n", time / NUMPAGES / TRIALS);
+    free(a);
+    return 0;
 }
