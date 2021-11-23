@@ -1,0 +1,39 @@
+Translate VA (i.e. 611C)
+
+611C = 11000 01000 11100
+
+Take first 5 bits and translate to Decimal
+
+11000 = 24
+
+Look at the spot 24 (always 2bit groups and start with 0) in the given PDBR (i.e. 108)
+
+A1 = 10100001
+
+Is it valid (1 at first bit)?
+
+Yes -> (1)0100001 translate into dec -> 33 or 21 in Hex
+
+No -> Adress not valid
+
+Now look at next 5 bits of the VA (611C) 
+
+01000 -> 8 in dec
+
+Now go to page 33 and look at spot 8 (always 2bit groups and start with 0)
+
+B5 -> 10110101
+
+Is it valid (1 at first bit)?
+
+Yes -> (1)0110101 translate into dec -> 53 or 35 in Hex
+
+No -> Adress not valid
+
+Now check last 5 bits of the VA (611C)
+
+11100 -> 28 in Dec
+
+Now go to page 53 and look at spot 28 (always 2bit groups and start with 0)
+
+08 -> Value that we wanted
