@@ -1,0 +1,15 @@
+ARG addresses -1
+ARG addressfile ./vpn.txt
+ARG numaddrs 10
+ARG policy MRU
+ARG clockbits 2
+ARG cachesize 4
+ARG maxpage 10
+ARG seed 0
+ARG notrace False
+
+Solving...
+
+
+FINALSTATS hits 339774   misses 304329   hitrate 52.75
+
