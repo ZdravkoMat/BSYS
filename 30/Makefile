@@ -1,5 +1,5 @@
 
-BINARIES = main-two-cvs-while.out main-two-cvs-if.out main-one-cv-while.out main-two-cvs-while-extra-unlock.out
+BINARIES = main-two-cvs-while main-two-cvs-if main-one-cv-while main-two-cvs-while-extra-unlock
 HEADERS = common.h common_threads.h main-header.h main-common.c pc-header.h
 
 all: $(BINARIES)
