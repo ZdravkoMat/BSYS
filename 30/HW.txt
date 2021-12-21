@@ -1,0 +1,52 @@
+1)
+
+2)
+
+3)
+
+4) 
+Total time: 12.01 seconds
+
+The first consumer gets the value after the producer writes it in the buffer(produce). 
+Then the second consumer is now waiting, but when the producer releases the lock after producing, 
+the first consumer acquires the lock again. Now the second consumer wakes up and it doesn't get the value when it sleeps for 1 second and holding the lock. 
+As a result, one consumer consumes almost all of the values, the second gets 1-2 more and the last one may not consume a single value.
+
+5)
+Total time: 11.01 seconds
+
+Basically nothing has changed because we still only have a single producer, 
+but one of the threads no longer has to wait for the EOS (end-of-stream), as there is now enough buffersize available.
+
+6)
+Total time: 5.00 seconds
+
+Each consumer takes it in turn, because after each consumption the consumer goes to sleep for 1 second, 
+whereby the next consumer takes the turn, consumes and then goes to sleep, without holding the lock.
+This continues until before the last value. After this has been consumed by a customer and goes to sleep for 1 second, 
+until the other two consumers have reached EOS and go to sleep for a second. 
+Now the consumer of the last value wakes up again, consumes EOS and goes to sleep.
+
+7)
+Total time: 5.00 seconds
+
+Even with a larger buffer, the time remains the same at around 5 seconds.
+
+8)
+No, it is not possible.
+
+Since there is only one producer and one consumer, a single condition variable is completely sufficient.
+
+9)
+No. It is not possible to sleep. this is very similar to the situation in the book - Figure 30.9: Thread Trace: Broken Solution (v1)
+We didn't manage to get everyone to sleep at the same time.
+
+10)
+In the case of one producer and one consumer, everything is carried out correctly with the if. 
+The problems only arise when there are several consumers, since the CV can change again during the if query. therefore, 
+if you have multiple consumers and / or producers, you should replace the if with a while loop
+
+11)
+If the lock is released before the put and get, a problem could arise if two producers try to call do_fill () at the same time or, similarly, 
+if two consumers try to call do_get () at the same time. It could also happen that a consumer checks that a new value is available, 
+but if the lock is released before the do_get () method is called, another consumption could come before him and consume this value.

@@ -35,14 +35,14 @@ int get(counter_t *c)
 counter_t c_t;
 
 long int getTime(struct timespec *start, struct timespec *end){
-    long int secDiff = end->tv_sec - start->tv_sec;
-    long int nsecDiff = end->tv_nsec - start->tv_nsec;
-    if(nsecDiff < 0){
-        secDiff -= 1.0;
-        nsecDiff += BILLION;
+    long int sDiff = end->tv_sec - start->tv_sec;
+    long int nsDiff = end->tv_nsec - start->tv_nsec;
+    if(nsDiff < 0){
+        sDiff -= 1.0;
+        nsDiff += BILLION;
     }
-    long int accum = secDiff * BILLION + nsecDiff;
-    return accum;
+    long int time = sDiff * BILLION + nsDiff;
+    return time;
 }
 
 int main()
@@ -70,19 +70,11 @@ long int loopTime()
 {
     long int totalLoop;
     struct timespec start, end;
-    if (clock_gettime(CLOCK_MONOTONIC_RAW, &start) < 0)
-    {
-        printf("timestamp start error!");
-        exit(1);
-    }
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     for (int i = 0; i < MILLION; i++)
     {
     }
-    if (clock_gettime(CLOCK_MONOTONIC_RAW, &end) < 0)
-    {
-        printf("timestamp end error!");
-        exit(1);
-    }
-    totalLoop = ((end.tv_sec - start.tv_sec) + BILLION) + (end.tv_nsec - start.tv_nsec);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    totalLoop = getTime(&start, &end);
     return totalLoop;
 }
