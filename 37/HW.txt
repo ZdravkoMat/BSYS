@@ -1,0 +1,51 @@
+1)  Request     Seek    Rotate  Transfer
+    0           0       165     30
+    6           0       345     30
+    30          80      265     30
+    7,30,8      160     545     90
+    10,11,12,13 40      425     120
+
+2)
+depends on the request... if no seek time is involved time stays the same...
+if seek time is involved it can be faster but its not guaranteed that its faster.
+
+3)
+slower.... much slower...
+
+4)
+FIFO = 7,30,8
+SSTF = 7,8,30   seek 80 rotate 205 transfer 30 = 315
+
+5)
+
+
+6)
+((seektime*seekspeed)*rotationalspeed)/gradanzahl pro einheit
+(40 / 1) * 1 / 30
+
+7)
+
+
+1. Bei -a 7,30,8 wäre es besser, es als 7,8,30 einzulesen, da von 7 nach 8 kein Wechsel der Spur nötig ist. 
+Bei -a 10,11,12,13 ist das Problem, dass die 12 auf der nächsten Spur ist und durch das Skewing wird die 12 knapp verpasst.
+
+2. Die -a 7,30,8 wird mit zu großer Suchzeit die 8 nach der 30 knapp verpasst, bei zu langer Suchzeit kommt es zu unnötigen Umdrehungen.
+Es gibt zur Suchzeit keinen proportionalen Zusammenhang, es hängt davon ab, ob der Sektor noch erreicht wird.
+Beim Beispiel -a 10,11,12,13 ist das Problem, wenn 11 fertig gelesen ist, ist man zu diesem Zeitpunkt von der Rotation her schon bei 12, 
+kommt durch das Ändern der Kopfposition nicht mehr zum Anfang dieses Sektors.
+
+3. Ist die Suchgeschwindigkeit entsprechend groß, wird nach 30, ohne weitere Umdrehung 8 gefunden. Wird die Umdrehungszahl größer, 
+so muss die Suchgeschwindigkeit entsprechend größer werden.
+
+4. Da, wie schon beschrieben, 7 und 8 nacheinander auf der platte kommen, ist SSTF hier besser.
+
+5. SATF und SSTF machen für -a 7,30,8 keinen Unterschied. Allerdings macht es einen Unterschied für 20,18,10,6,12, 
+denn bei SSTF wird so weniger wie möglich der Kopf bewegt, also im Prinzip jede Spur abgearbeitet. 
+Allerdings ist dies manchmal nicht ideal, da es schneller sein kann, wieder zurückzugehen und da den nächsten ‚Sektor auszulesen, 
+was SATF macht, und bei 0,18,10,6,12 der Fall ist.
+
+6. Da 11 und 12 aneinander grenzen, außer dass sie in zwei Spuren sind, wird 12 wie beschrieben knapp verpasst, Durch das Skewing von 1, 
+wird dies bei einer Suchgeschwindigkeit von 1 gerade noch erreicht. Durch langsameres Suchen nicht.
+
+7. Im Durchschnitt etwa 0,004545455 Sektoren pro Zeiteinheit. Die Suchzeit bändert sich durch das FIFO, jenachdem zu welcher Spur man zunächst muss, 
+die Rotationszeit ändert sich je nach zu erreichendem Sektor. 
